@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine? 💕</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .hearts-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: relative;
+            font-size: 20px;
+            opacity: 0;
+            animation: float-up 6s linear infinite;
+        }
+
+        @keyframes float-up {
+            0% {
+                opacity: 0;
+                transform: translateY(0) rotate(0deg);
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) rotate(360deg);
+            }
+        }
+
+        .container {
+            text-align: center;
+            padding: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 1100px;
+            width: 90%;
+            position: relative;
+            z-index: 10;
+            animation: fadeInScale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .sparkle {
+            position: absolute;
+            font-size: 30px;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 3.5em;
+            background: linear-gradient(45deg, #ff6b9d, #c06c84, #f67280);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .question {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 50px;
+            font-weight: 700;
+            animation: slideIn 0.8s ease-out 0.3s both;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            position: relative;
+            min-height: 500px;
+            padding: 40px;
+            width: 100%;
+        }
+
+        button {
+            font-family: 'Quicksand', sans-serif;
+            padding: 20px 50px;
+            font-size: 1.5em;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            animation: slideIn 0.8s ease-out 0.5s both;
+        }
+
+        #yesBtn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            z-index: 2;
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 15px 35px rgba(245, 87, 108, 0.4);
+        }
+
+        #noBtn {
+            z-index: 3;
+            z-index: 3;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #666;
+            position: absolute;
+            transition: all 0.2s ease-out;
+            will-change: transform, left, top;
+        }
+
+        #noBtn.moving {
+            pointer-events: none;
+        }
+
+        .celebration {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .celebration-content {
+            text-align: center;
+            color: white;
+            animation: bounceIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .celebration-content h2 {
+            font-family: 'Pacifico', cursive;
+            font-size: 5em;
+            margin-bottom: 30px;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .celebration-content p {
+            font-size: 2em;
+            font-weight: 600;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f5576c;
+            position: absolute;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .gif-container {
+            margin: 30px 0;
+            animation: slideIn 0.8s ease-out 0.4s both;
+        }
+
+        .gif-container img {
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            object-fit: cover;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        
+        .layout {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 35px;
+            align-items: center;
+        }
+
+        .left { text-align: left; }
+        .right { text-align: center; }
+
+        .main-ask {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.4em;
+            margin: 10px 0 18px 0;
+            background: linear-gradient(45deg, #ff6b9d, #c06c84, #f67280);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .button-hint {
+            margin-top: 16px;
+            font-size: 1.05em;
+            color: #666;
+            font-weight: 600;
+            opacity: 0.9;
+            min-height: 1.4em;
+        }
+
+
+@media (max-width: 900px) {
+            .layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .left { text-align: center; }
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            .question {
+                font-size: 1.4em;
+            }
+            
+            button {
+                padding: 15px 35px;
+                font-size: 1.2em;
+            }
+
+            .celebration-content h2 {
+                font-size: 3em;
+            }
+
+            .celebration-content p {
+                font-size: 1.5em;
+            }
+        }
+
+        .big-heart {
+            font-size: 4em;
+            margin: 20px 0;
+            animation: heartBeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.2);
+            }
+            50% {
+                transform: scale(1);
+            }
+            75% {
+                transform: scale(1.2);
+            }
+        }
+    
+        /* Custom cursors */
+        #yesBtn:hover {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><text y="24" font-size="24">❤️</text></svg>') 16 16, pointer;
+        }
+
+        #noBtn:hover {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><text y="24" font-size="24">🖕</text></svg>') 16 16, pointer;
+        }
+        
+        /* Keep the middle-finger cursor active even when #noBtn temporarily
+           has `pointer-events: none` while it jumps around. We apply the
+           cursor to `body` (and descendants) while the class is present. */
+        .middle-cursor-active, .middle-cursor-active * {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><text y="24" font-size="24">🖕</text></svg>') 16 16, pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-background" id="heartsBackground"></div>
+
+    <div class="container">
+        <span class="sparkle" style="top: -20px; left: 20px; animation-delay: 0s;">✨</span>
+        <span class="sparkle" style="top: -10px; right: 30px; animation-delay: 0.5s;">✨</span>
+        <span class="sparkle" style="bottom: 20px; left: 30px; animation-delay: 1s;">✨</span>
+        <span class="sparkle" style="bottom: 30px; right: 20px; animation-delay: 1.5s;">✨</span>
+        
+        
+        <div class="layout">
+            <div class="left">
+                <h1>Hey… My Favorite Addiction ❤️</h1>
+                <div class="big-heart">💕</div>
+
+                <p class="subtitle">
+Before you roll your eyes and call me dramatic…  
+just know this is coming from the same heart  
+that beats a little faster every time you say my name.
+                </p>
+
+                <p class="question">
+You already have my attention.
+My time.
+My soft side.
+And my sanity.
+                </br>
+So here’s what's gonna happen on 27th February in Miami:</br>
+I’m taking you out.
+
+I’m looking at you like it’s the first time.
+I’m holding your hand like I just earned it.
+
+And you?
+
+You’re saying yes.
+                </p>
+
+                <p style="margin-top:18px; font-size:1.1em; color:#777;">
+Because even though you’re already mine…  
+I still want to win you.  
+Every. Single. Day.
+                </p>
+
+                <p style="margin-top:18px; font-size:1.05em; color:#555; line-height:1.4;">
+And although we are not together to celeberate Valentine's day together</b>…  <i>I'm gonna treat you like a queen and just keep one thing in your mind,
+     I'm gonna break you in our hotel room. I don't care if people here us having sex, I'm gonna go wild on you.</i>. 🌴✨  
+JUST A REMINDER YK for what's coming in 2 weeks. 😌❤️
+                </p>
+            </div>
+
+            <div class="right">
+                <div class="gif-container">
+                    <svg viewBox="0 0 200 200" style="width: 220px; height: 220px;">
+                        <defs>
+                            <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff6b9d;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <g transform="translate(100, 100)">
+                            <path d="M 0,-30 C -15,-50 -45,-50 -45,-25 C -45,0 0,30 0,30 C 0,30 45,0 45,-25 C 45,-50 15,-50 0,-30 Z" fill="url(#heartGradient)">
+                                <animateTransform attributeName="transform" attributeType="XML" type="scale" values="1;1.2;1;1.2;1" dur="1.5s" repeatCount="indefinite"/>
+                            </path>
+                        </g>
+                        <circle cx="40" cy="60" r="8" fill="#ff6b9d" opacity="0.6">
+                            <animate attributeName="cy" values="60;40;60" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="160" cy="80" r="6" fill="#f5576c" opacity="0.6">
+                            <animate attributeName="cy" values="80;60;80" dur="2.5s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="50" cy="140" r="7" fill="#ff6b9d" opacity="0.6">
+                            <animate attributeName="cy" values="140;120;140" dur="2.2s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="150" cy="130" r="6" fill="#f5576c" opacity="0.6">
+                            <animate attributeName="cy" values="130;110;130" dur="1.8s" repeatCount="indefinite"/>
+                        </circle>
+                    </svg>
+                </div>
+
+                <p class="main-ask">Will you be my Valentine? 💘</p>
+
+                <div class="buttons-container" id="buttonsContainer">
+                    <button id="yesBtn">YES (come here 😘)</button>
+                    <button id="noBtn">NO (try me 😈)</button>
+                </div>
+
+                <div class="button-hint" id="buttonHint">Hover “NO” if you like chaos. Hover “YES” if you like me. 😌</div>
+            </div>
+        </div>
+</div>
+
+    <div class="celebration" id="celebration">
+        <div class="celebration-content">
+            <h2>Of course you said yes 😌❤️</h2>
+            <div class="big-heart">❤️</div>
+            <p>
+You really thought I’d let the most beautiful girl in my world  
+click anything else?
+</p>
+            <p style="margin-top: 20px; font-size: 1.4em;">
+Now listen carefully…  
+
+I’m taking you out.  
+I’m holding your hand.  
+I’m looking at you like you’re the only girl in the room.  
+
+And in Miami?  
+I’m pulling you close, stealing a kiss you’re definitely not prepared for,  
+and making the ocean jealous of how you glow. 💋🌊
+</p>
+
+<p style="margin-top: 25px; font-size: 1.2em;">
+You’re not just my Valentine.  
+You’re my peace, my chaos, my favorite distraction,  
+and the only person I’d gladly lose sleep over. ❤️
+</p>
+        </div>
+    </div>
+    <div id="middleFinger" style="
+  position: fixed;
+  font-size: 64px;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 9999;
+  transform: translate(-50%, -50%) scale(0.5);
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.25));
+">
+  🖕
+</div>
+
+
+    <script>
+        // Create floating hearts background
+        function createHeart() {
+            const heartsContainer = document.getElementById('heartsBackground');
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = ['❤️', '💕', '💖', '💗', '💓', '💝'][Math.floor(Math.random() * 6)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            heartsContainer.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 8000);
+        }
+
+        setInterval(createHeart, 300);
+
+        // No button runs away
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const container = document.getElementById('buttonsContainer');
+        
+        // 🖕 Middle finger hover animation (GSAP)
+const middleFinger = document.getElementById('middleFinger');
+let fingerTL = null;
+let fingerStaticWhileHover = false;
+let fingerVisible = false;
+let fingerHideTimeout = null;
+
+function showFinger(x, y) {
+  if (!middleFinger) return;
+
+  if (fingerHideTimeout) {
+    clearTimeout(fingerHideTimeout);
+    fingerHideTimeout = null;
+  }
+
+  middleFinger.style.left = x + "px";
+  middleFinger.style.top = y + "px";
+
+    if (!fingerVisible) {
+        fingerVisible = true;
+
+        gsap.killTweensOf(middleFinger);
+
+        if (!fingerStaticWhileHover) {
+            // Pop-in
+            gsap.fromTo(
+                middleFinger,
+                { opacity: 0, scale: 0.2, rotation: -25 },
+                { opacity: 1, scale: 1.2, rotation: 0, duration: 0.10, ease: "back.out(2.2)" }
+            );
+
+            // Shake loop
+            if (fingerTL) fingerTL.kill();
+            fingerTL = gsap.timeline({ repeat: -1, yoyo: true })
+                .to(middleFinger, { rotation: 12, duration: 0.04, ease: "power1.inOut" })
+                .to(middleFinger, { rotation: -12, duration: 0.04, ease: "power1.inOut" });
+        } else {
+            // Static pop-in (no shaking)
+            gsap.fromTo(
+                middleFinger,
+                { opacity: 0, scale: 0.2, rotation: -25 },
+                { opacity: 1, scale: 1, rotation: 0, duration: 0.08, ease: "back.out(1.7)" }
+            );
+        }
+    }
+}
+
+function hideFinger(delay = 250) {
+  if (!middleFinger) return;
+  if (fingerHideTimeout) clearTimeout(fingerHideTimeout);
+
+  fingerHideTimeout = setTimeout(() => {
+    fingerVisible = false;
+    if (fingerTL) { fingerTL.kill(); fingerTL = null; }
+
+    gsap.to(middleFinger, {
+      opacity: 0,
+      scale: 0.4,
+      rotation: 20,
+      duration: 0.2,
+      ease: "power2.in"
+    });
+  }, delay);
+}
+
+// Show when hovering NO
+noBtn.addEventListener("mouseenter", () => {
+  const rect = noBtn.getBoundingClientRect();
+  showFinger(rect.left + rect.width / 2, rect.top - 30);
+});
+
+// Follow cursor inside the button zone (so it stays visible even if NO runs away)
+container.addEventListener("mousemove", (e) => {
+  showFinger(e.clientX + 25, e.clientY - 25);
+});
+
+// Hide when leaving
+container.addEventListener("mouseleave", () => hideFinger(150));
+noBtn.addEventListener("mouseleave", () => hideFinger(200));
+
+        
+
+        const hint = document.getElementById('buttonHint');
+
+        yesBtn.addEventListener('mouseenter', () => {
+            hint.textContent = 'Good choice 😌❤️ (also… Miami date secured 🌴✨)';
+        });
+
+        yesBtn.addEventListener('mouseleave', () => {
+            hint.textContent = 'Hover “NO” if you like chaos. Hover “YES” if you like me. 😌';
+        });
+
+        noBtn.addEventListener('mouseenter', () => {
+            activateNoBtnAbsolute();
+            hint.textContent = 'Oh you wanna press NO? Cute. Try. 😈';
+        });
+
+        noBtn.addEventListener('mouseleave', () => {
+            hint.textContent = 'Hover “NO” if you like chaos. Hover “YES” if you like me. 😌';
+        });
+
+let noBtnSize = 1;
+        let yesBtnSize = 1;
+        let noBtnActivated = false;
+        let moveInterval = null;
+
+        function activateNoBtnAbsolute() {
+            if (noBtnActivated) return;
+
+            // Capture current position within the container, then switch to absolute so it can "run away"
+            const containerRect = container.getBoundingClientRect();
+            const btnRect = noBtn.getBoundingClientRect();
+
+            const left = btnRect.left - containerRect.left;
+            const top = btnRect.top - containerRect.top;
+
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = left + 'px';
+            noBtn.style.top = top + 'px';
+
+            noBtnActivated = true;
+        }
+        function hideFinger(delay = 250) {
+  if (!middleFinger) return;
+  if (fingerHideTimeout) clearTimeout(fingerHideTimeout);
+
+  fingerHideTimeout = setTimeout(() => {
+    // ✅ Don't hide if the NO-hover chase is active
+    if (typeof isHovering !== "undefined" && isHovering) return;
+
+    fingerVisible = false;
+    if (fingerTL) { fingerTL.kill(); fingerTL = null; }
+
+    gsap.to(middleFinger, {
+      opacity: 0,
+      scale: 0.4,
+      rotation: 20,
+      duration: 0.2,
+      ease: "power2.in"
+    });
+  }, delay);
+}
+
+
+        function moveNoButton() {
+            activateNoBtnAbsolute();
+
+            const containerRect = container.getBoundingClientRect();
+            const btnRect = noBtn.getBoundingClientRect();
+            const yesBtnRect = yesBtn.getBoundingClientRect();
+
+            // Calculate YES button position relative to container
+            const yesLeft = yesBtnRect.left - containerRect.left;
+            const yesTop = yesBtnRect.top - containerRect.top;
+
+            // Movement area
+            const maxX = containerRect.width - btnRect.width - 40;
+            const maxY = containerRect.height - btnRect.height - 40;
+
+            let randomX, randomY;
+            let attempts = 0;
+            const safeDistance = 250; // Keep NO at least 250px away from YES center
+
+            // Keep trying to find a position that's FAR from YES
+            do {
+                randomX = Math.max(40, Math.random() * maxX);
+                randomY = Math.max(40, Math.random() * maxY);
+                
+                // Calculate distance from new NO position to YES button center
+                const yesCenterX = yesLeft + yesBtnRect.width / 2;
+                const yesCenterY = yesTop + yesBtnRect.height / 2;
+                const noCenterX = randomX + btnRect.width / 2;
+                const noCenterY = randomY + btnRect.height / 2;
+                
+                const distance = Math.sqrt(
+                    Math.pow(noCenterX - yesCenterX, 2) + 
+                    Math.pow(noCenterY - yesCenterY, 2)
+                );
+                
+                // Make sure it's far enough AND not overlapping
+                const noRight = randomX + btnRect.width;
+                const noBottom = randomY + btnRect.height;
+                const yesRight = yesLeft + yesBtnRect.width;
+                const yesBottom = yesTop + yesBtnRect.height;
+                
+                const notOverlapping = (
+                    randomX > yesRight + 100 || // NO is to the right of YES (with margin)
+                    noRight < yesLeft - 100 ||  // NO is to the left of YES (with margin)
+                    randomY > yesBottom + 100 || // NO is below YES (with margin)
+                    noBottom < yesTop - 100     // NO is above YES (with margin)
+                );
+                
+                if (distance > safeDistance && notOverlapping) {
+                    break; // Found a good spot!
+                }
+                attempts++;
+            } while (attempts < 50); // Try up to 50 times to find a good spot
+
+            // Use GSAP for super smooth, fast animation
+            noBtn.classList.add('moving');
+            gsap.to(noBtn, {
+                left: randomX,
+                top: randomY,
+                duration: 0.15, // Very fast movement
+                ease: "power2.out",
+                onComplete: () => {
+                    setTimeout(() => {
+                        noBtn.classList.remove('moving');
+                    }, 50);
+                }
+            });
+
+            // Shrink NO faster, grow YES more
+            noBtnSize = Math.max(noBtnSize * 0.85, 0.4);
+            yesBtnSize = Math.min(yesBtnSize * 1.15, 2.2);
+
+            gsap.to(noBtn, {
+                scale: noBtnSize,
+                duration: 0.3,
+                ease: "power2.out"
+            });
+            
+            gsap.to(yesBtn, {
+                scale: yesBtnSize,
+                duration: 0.3,
+                ease: "back.out(1.7)"
+            });
+        }
+
+        let isHovering = false;
+
+        noBtn.addEventListener('mouseenter', () => {
+            activateNoBtnAbsolute();
+            isHovering = true;
+            
+            // Move immediately
+            moveNoButton();
+            
+            // Start rapid continuous movement
+            if (!moveInterval) {
+                moveInterval = setInterval(() => {
+                    if (isHovering) {
+                        moveNoButton();
+                    }
+                }, 180); // Move every 180ms - super fast!
+            }
+        });
+
+        noBtn.addEventListener('mouseleave', () => {
+            isHovering = false;
+            // Stop moving when mouse leaves
+            if (moveInterval) {
+                clearInterval(moveInterval);
+                moveInterval = null;
+            }
+        });
+
+        noBtn.addEventListener('click', (e) => {
+            activateNoBtnAbsolute();
+            e.preventDefault();
+            // Move it away even on click
+            moveNoButton();
+        });
+
+
+        // Ensure the cursor stays as the middle-finger even while the NO
+        // button temporarily gets `pointer-events: none` during its quick
+        // movements. We add/remove a class on the `body` so the cursor stays
+        // visible and the button behavior is not altered.
+        noBtn.addEventListener('mouseenter', () => {
+            document.body.classList.add('middle-cursor-active');
+            // Make the middle finger static while hovering NO
+            fingerStaticWhileHover = true;
+            if (fingerTL) { fingerTL.kill(); fingerTL = null; }
+            gsap.killTweensOf(middleFinger);
+            gsap.set(middleFinger, { opacity: 1, scale: 1, rotation: 0 });
+            fingerVisible = true;
+        });
+        noBtn.addEventListener('mouseleave', () => {
+            document.body.classList.remove('middle-cursor-active');
+            fingerStaticWhileHover = false;
+        });
+        container.addEventListener('mouseleave', () => {
+            document.body.classList.remove('middle-cursor-active');
+            fingerStaticWhileHover = false;
+        });
+
+
+       
+
+        noBtn.addEventListener('mouseenter', (e) => {
+            const rect = noBtn.getBoundingClientRect();
+            middleFinger.style.left = rect.left + rect.width/2 - 20 + 'px';
+            middleFinger.style.top = rect.top - 70 + 'px';
+            
+            gsap.fromTo(middleFinger, 
+                { opacity: 0, scale: 0.3, rotation: -30 },
+                { opacity: 1, scale: 1.2, rotation: 0, duration: 0.2, ease: "back.out(2)" }
+            );
+        });
+
+        noBtn.addEventListener('mouseleave', () => {
+            gsap.to(middleFinger, {
+                opacity: 0,
+                scale: 0.3,
+                rotation: 30,
+                duration: 0.2,
+                ease: "power2.in"
+            });
+        });
+
+        // Yes button celebration
+        yesBtn.addEventListener('click', () => {
+            const celebration = document.getElementById('celebration');
+            celebration.style.display = 'flex';
+            
+            // Stop the no button movement
+            if (moveInterval) {
+                clearInterval(moveInterval);
+            }
+            
+            // Create confetti
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = -10 + 'px';
+                    confetti.style.backgroundColor = ['#f093fb', '#f5576c', '#ffd700', '#ff6b9d', '#c06c84'][Math.floor(Math.random() * 5)];
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    celebration.appendChild(confetti);
+                }, i * 30);
+            }
+
+            // Add more hearts
+            setInterval(createHeart, 100);
+
+        const middleFinger = document.getElementById('middleFinger');
+
+let fingerTL = null;
+let fingerVisible = false;
+let fingerHideTimeout = null;
+
+// Show and animate finger
+function showFinger(x, y) {
+    if (!middleFinger) return;
+
+    if (fingerHideTimeout) {
+        clearTimeout(fingerHideTimeout);
+        fingerHideTimeout = null;
+    }
+
+    middleFinger.style.left = x + "px";
+    middleFinger.style.top = y + "px";
+
+    if (!fingerVisible) {
+        fingerVisible = true;
+
+        gsap.killTweensOf(middleFinger);
+
+        // Pop in animation
+        gsap.fromTo(
+            middleFinger,
+            { opacity: 0, scale: 0.2, rotation: -25 },
+            { opacity: 1, scale: 1.2, rotation: 0, duration: 0.2, ease: "back.out(2.2)" }
+        );
+
+        // Shake animation loop
+        if (fingerTL) fingerTL.kill();
+        fingerTL = gsap.timeline({ repeat: -1, yoyo: true });
+        fingerTL
+            .to(middleFinger, { rotation: 12, duration: 0.08, ease: "power1.inOut" })
+            .to(middleFinger, { rotation: -12, duration: 0.08, ease: "power1.inOut" });
+    }
+}
+
+// Hide finger smoothly
+function hideFinger(delay = 300) {
+    if (fingerHideTimeout) clearTimeout(fingerHideTimeout);
+
+    fingerHideTimeout = setTimeout(() => {
+        fingerVisible = false;
+        if (fingerTL) {
+            fingerTL.kill();
+            fingerTL = null;
+        }
+
+        gsap.to(middleFinger, {
+            opacity: 0,
+            scale: 0.4,
+            rotation: 20,
+            duration: 0.2,
+            ease: "power2.in"
+        });
+    }, delay);
+}
+
+// When hovering NO button
+noBtn.addEventListener("mouseenter", () => {
+    const rect = noBtn.getBoundingClientRect();
+    showFinger(rect.left + rect.width / 2, rect.top - 30);
+});
+
+// Follow cursor while inside button container
+container.addEventListener("mousemove", (e) => {
+    showFinger(e.clientX + 25, e.clientY - 25);
+});
+
+// Hide when leaving area
+container.addEventListener("mouseleave", () => {
+    hideFinger(200);
+});
+
+noBtn.addEventListener("mouseleave", () => {
+    hideFinger(250);
+});
+
+        });
+    </script>
+
+</body>
+</html>
